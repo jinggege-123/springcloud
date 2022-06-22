@@ -1,0 +1,50 @@
+server:
+  port: 8085
+spring:
+  application:
+    name: nacos-02
+  main:
+    allow-bean-definition-overriding: true
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 11.101.4.116:8848,11.101.4.116:8850,11.101.4.116:8852
+#sentinel config
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        port: 8720
+      datasource:
+        flow-rule: # 名字自定义
+          nacos:
+            server-addr: localhost:8848
+            username: nacos
+            password: nacos
+            dataId: my-sentinel-flow-rule
+            rule-type: flow
+
+
+#  profiles:
+#    active: dev
+feign:
+  client:
+    config:
+      default:
+          connect-timeout: 5000
+          read-timeout: 5000
+#  openfeign整合sentinel
+  sentinel:
+    enabled: true
+
+
+logging:
+  level:
+    com.zlp.feign.order.feign: debug
+
+## 暴露端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
